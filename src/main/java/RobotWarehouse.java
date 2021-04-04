@@ -1,52 +1,70 @@
+import exception.InvalidDataException;
 import exception.MovingOutOfGridException;
 
 public class RobotWarehouse {
 
-    int xAxes;
-    int yAxes;
+    int xAxis = 9;
+    int yAxis = 0;
+    boolean holdingCrate = false;
 
-    String moveRobot(int x, int y, String move) {
-        xAxes = x;
-        yAxes = y;
+    int x = xAxis;
+    int y = yAxis;
+
+    boolean[][] crateArray = new boolean[][]{
+            {false, false, false, false, false, false, false, false, false, true},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, true, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false}
+    };
+
+    String moveRobot(String move) throws Exception {
+        /*xAxis = x;
+        yAxis = y;*/
         char[] directions = getDirectionsFromInput(move);
 
         for (char direction : directions) {
-            try {
-                switch (direction) {
-                    case 'N' -> xAxes = decrementAxes(x, y, xAxes);
-                    case 'E' -> yAxes = incrementAxes(x, y, yAxes);
-                    case 'S' -> xAxes = incrementAxes(x, y, xAxes);
-                    case 'W' -> yAxes = decrementAxes(x, y, yAxes);
-                    default -> throw new Exception("Invalid Input");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            switch (direction) {
+                case RobotConstants.NORTH -> xAxis = decrementAxis(x, y, xAxis);
+                case RobotConstants.EAST -> yAxis = incrementAxis(x, y, yAxis);
+                case RobotConstants.SOUTH -> xAxis = incrementAxis(x, y, xAxis);
+                case RobotConstants.WEST -> yAxis = decrementAxis(x, y, yAxis);
+                default -> throw new InvalidDataException("Invalid Input");
             }
         }
 
-        if (xAxes == x && yAxes == y) {
-            return "The robot is back at the origin (" + xAxes + "," + yAxes + ")";
-        } else if (xAxes == 5 && yAxes == 4) {
-            return "The robot is at the centre of the grid (" + xAxes + "," + yAxes + ")";
+        if (xAxis == x && yAxis == y) {
+            return RobotConstants.ROBOT_IS_BACK_AT_ORIGIN + xAxis + "," + yAxis + ")";
+        } else if (xAxis == 5 && yAxis == 4) {
+            return RobotConstants.ROBOT_IS_IN_THE_MIDDLE + xAxis + "," + yAxis + ")";
         } else {
-            return "The robot is at the position (" + xAxes + "," + yAxes + ")";
+            return RobotConstants.ROBOT_IS_AT_THE_POSITION + xAxis + "," + yAxis + ")";
         }
     }
 
-    public int incrementAxes(int x, int y, int axes) throws Exception {
-        axes++;
-        if (axes > 9) {
-            throw new MovingOutOfGridException("trying to move out of the grid, robot moved to initial place (" + x + "," + y + ")");
+    public int incrementAxis(int x, int y, int axis) throws Exception {
+        axis++;
+        if (axis > 9) {
+            xAxis = x;
+            yAxis = y;
+            throw new MovingOutOfGridException(RobotConstants.MOVING_OUT_OF_THE_GRID + x + "," + y + ")");
         }
-        return axes;
+        return axis;
     }
 
-    public int decrementAxes(int x, int y, int axes) throws Exception {
-        axes--;
-        if (axes < 0) {
-            throw new MovingOutOfGridException("trying to move out of the grid, robot moved to initial place (" + x + "," + y + ")");
+    public int decrementAxis(int x, int y, int axis) throws Exception {
+        axis--;
+        if (axis < 0) {
+            xAxis = x;
+            yAxis = y;
+            throw new MovingOutOfGridException(RobotConstants.MOVING_OUT_OF_THE_GRID + x + "," + y + ")");
         }
-        return axes;
+        return axis;
     }
 
     public char[] getDirectionsFromInput(String directions) {
@@ -56,5 +74,37 @@ public class RobotWarehouse {
             directionsArray[i] = newDirections.charAt(i);
         }
         return directionsArray;
+    }
+
+    public void crateOperations(String command) {
+        switch (command) {
+            case RobotConstants.PICKUP -> pickTheCrate();
+            case RobotConstants.DROP -> dropTheCrate();
+            default -> System.out.println("Invalid option");
+        }
+    }
+
+    public void pickTheCrate() {
+        boolean isCratePresent = crateArray[xAxis][yAxis];
+        if (isCratePresent && !holdingCrate) {
+            System.out.println("picking up the crate");
+            holdingCrate = true;
+            crateArray[xAxis][yAxis] = false;
+            System.out.println("Picked up the crate");
+        } else {
+            System.out.println("Crate is not present / my arms are occupied");
+        }
+    }
+
+    public void dropTheCrate() {
+        boolean isCratePresent = crateArray[xAxis][yAxis];
+        if (!isCratePresent && holdingCrate) {
+            System.out.println(RobotConstants.CRATE_IS_NOT_PRESENT + xAxis + "," + yAxis + ") dropping the crate gently");
+            holdingCrate = false;
+            crateArray[xAxis][yAxis] = true;
+            System.out.println("Dropped the crate");
+        } else {
+            System.out.println(RobotConstants.CRATE_IS_PRESENT + xAxis + "," + yAxis + ") please drop in different location");
+        }
     }
 }
