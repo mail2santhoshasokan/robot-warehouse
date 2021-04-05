@@ -1,3 +1,7 @@
+/**
+ * RobotConstants - holds the constant values required for the program.
+ */
+
 public class RobotConstants {
 
     public static final char NORTH = 'N';

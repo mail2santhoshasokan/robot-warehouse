@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/**
+ * Operations - class takes in instructions and manipulates the Robot in the warehouse
+ */
 public class Operations {
 
     Scanner scanner = new Scanner(System.in);

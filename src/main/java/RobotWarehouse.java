@@ -1,6 +1,10 @@
 import exception.InvalidDataException;
 import exception.MovingOutOfGridException;
 
+/**
+ * RobotWarehouse - performs all the functions related to moving of the robot and
+ * picking up the crate
+ */
 public class RobotWarehouse {
 
     int xAxis = 9;
@@ -23,9 +27,13 @@ public class RobotWarehouse {
             {false, false, false, false, false, false, false, false, false, false}
     };
 
+    /**
+     * moveRobot method - takes in the direction from the user and moves accordingly
+     * @param move - directions in which the robot must move
+     * @return returns string message based on the condition
+     * @throws MovingOutOfGridException
+     */
     String moveRobot(String move) throws Exception {
-        /*xAxis = x;
-        yAxis = y;*/
         char[] directions = getDirectionsFromInput(move);
 
         for (char direction : directions) {
@@ -47,6 +55,14 @@ public class RobotWarehouse {
         }
     }
 
+    /**
+     * Increment Axis function increments the axis when robot moves towards south and East
+     * @param x  - retains the original value of xAxis
+     * @param y - retains the original value of yAxis
+     * @param axis
+     * @return returns incremented axis
+     * @throws Exception
+     */
     public int incrementAxis(int x, int y, int axis) throws Exception {
         axis++;
         if (axis > 9) {
@@ -57,6 +73,14 @@ public class RobotWarehouse {
         return axis;
     }
 
+    /**
+     * Decrement Axis function decrements the axis when the robot moves towards north and West
+     * @param x - retains the original value of xAxis
+     * @param y - retains the original value of yAxis
+     * @param axis
+     * @return - returns decremented axis
+     * @throws Exception
+     */
     public int decrementAxis(int x, int y, int axis) throws Exception {
         axis--;
         if (axis < 0) {
@@ -67,6 +91,12 @@ public class RobotWarehouse {
         return axis;
     }
 
+    /**
+     *
+     * @param directions - string provided by the user
+     * @return - char array with the directions obtained from splitting the string
+     * can be optimised if we use string.split()
+     */
     public char[] getDirectionsFromInput(String directions) {
         String newDirections = directions.replace(" ", "");
         char[] directionsArray = new char[newDirections.length()];
@@ -76,6 +106,10 @@ public class RobotWarehouse {
         return directionsArray;
     }
 
+    /**
+     * CrateOperations chooses to pick or drop the crate based on the user input
+     * @param command
+     */
     public void crateOperations(String command) {
         switch (command) {
             case RobotConstants.PICKUP -> pickTheCrate();
@@ -84,6 +118,10 @@ public class RobotWarehouse {
         }
     }
 
+    /**
+     * PickTheCrate method picks up the crate if the crate is present and
+     * if the robot is not holding any crate
+     */
     public void pickTheCrate() {
         boolean isCratePresent = crateArray[xAxis][yAxis];
         if (isCratePresent && !holdingCrate) {
@@ -96,6 +134,10 @@ public class RobotWarehouse {
         }
     }
 
+    /**
+     * DropTheCrate method drops the crate if there is no other crates present in the position
+     * and also only if its holding the crate
+     */
     public void dropTheCrate() {
         boolean isCratePresent = crateArray[xAxis][yAxis];
         if (!isCratePresent && holdingCrate) {
