@@ -51,7 +51,7 @@ public class Operations {
 
     private void workWithCrate() {
         System.out.println("To pick a crate enter G or to drop a crate enter D");
-        String command = scanner.next();
+        String command = scanner.nextLine();
         robotWarehouse.crateOperations(command);
     }
 }
