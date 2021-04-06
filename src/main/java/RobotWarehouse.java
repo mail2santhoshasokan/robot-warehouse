@@ -4,6 +4,8 @@ import exception.MovingOutOfGridException;
 /**
  * RobotWarehouse - performs all the functions related to moving of the robot and
  * picking up the crate
+ * xAxis - denotes North/south movement
+ * yAxis - denotes West/East movement
  */
 public class RobotWarehouse {
 
