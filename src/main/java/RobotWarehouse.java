@@ -6,6 +6,7 @@ import exception.MovingOutOfGridException;
  * picking up the crate
  * xAxis - denotes North/south movement
  * yAxis - denotes West/East movement
+ * Initialized the position of the robot to (9,0) which is north west corner of the grid.
  */
 public class RobotWarehouse {
 
