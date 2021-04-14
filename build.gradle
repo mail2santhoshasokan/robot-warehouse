@@ -2,6 +2,9 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'application'
+mainClassName = "Main"
+
 group 'org.example'
 version '1.0-SNAPSHOT'
 
@@ -15,6 +18,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.8.0'
 
+}
+
+run {
+    standardInput = System.in
 }
 
 test {

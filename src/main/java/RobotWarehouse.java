@@ -34,7 +34,7 @@ public class RobotWarehouse {
      * moveRobot method - takes in the direction from the user and moves accordingly
      * @param move - directions in which the robot must move
      * @return returns string message based on the condition
-     * @throws MovingOutOfGridException
+     * @throws - MovingOutOfGridException
      */
     String moveRobot(String move) throws Exception {
         char[] directions = getDirectionsFromInput(move);
@@ -111,7 +111,7 @@ public class RobotWarehouse {
 
     /**
      * CrateOperations chooses to pick or drop the crate based on the user input
-     * @param command
+     * @param command - contains the command to lift or drop the crate
      */
     public void crateOperations(String command) {
         switch (command) {
